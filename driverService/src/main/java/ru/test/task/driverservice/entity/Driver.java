@@ -47,6 +47,6 @@ public class Driver extends BaseEntity{
     @PostLoad
     public void calculateAge() {
         LocalDate now = LocalDate.now();
-        this.experience = Period.between(this.dateOfBirth, now).getYears();
+        this.experience = Period.between(this.dateOfBirth, now).getYears() - 18;
     }
 }
