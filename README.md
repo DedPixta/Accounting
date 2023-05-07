@@ -71,3 +71,6 @@
 Приложение станет доступно: 
 1. CarService - http://localhost:54010, документация по адресу http://localhost:54020/swagger-ui/index.html
 2. DriverService - http://localhost:54020, документация по адресу http://localhost:54010/swagger-ui/index.html
+
+![image](https://user-images.githubusercontent.com/101488434/236707439-b35a97fb-d18b-4e7d-8f60-732e123c4eaf.png)
+
