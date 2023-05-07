@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.test.task.carservice.entity.Car;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -16,4 +18,7 @@ public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificatio
 
     @Query("select c from Car c join fetch c.carParts where c.plateNumber = :plateNumber ")
     Optional<Car> findByPlateNumber(String plateNumber);
+
+    @Query("select c from Car c join fetch c.carParts where c.id in :ids ")
+    Collection<Car> findCarsById(List<Long> ids);
 }

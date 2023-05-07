@@ -68,6 +68,15 @@ public class CarController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
         return carService.getCars(carSpecification, pageable);
     }
+    @Operation(summary = "Get a list of cars by requested ids.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cars found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))})})
+    @GetMapping("/list")
+    public List<CarDto> getCarsByListId(@RequestParam("id") List<Long> ids) {
+        return carService.getCarsById(ids);
+    }
 
     @Operation(summary = "Get a car by id.")
     @ApiResponses(value = {

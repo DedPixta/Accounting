@@ -67,4 +67,11 @@ public class CarService {
         dbCar.setCarParts(carUpdate.getCarParts());
         carRepository.save(dbCar);
     }
+
+    public List<CarDto> getCarsById(List<Long> ids) {
+        return carRepository.findCarsById(ids)
+                .stream()
+                .map(carMapper::toDto)
+                .toList();
+    }
 }

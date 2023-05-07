@@ -1,0 +1,78 @@
+version: "3.9"
+services:
+  driver_db:
+    image: postgres:15
+    container_name: driver_db
+    networks:
+      - driver_network
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: drivers
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  car_db:
+    image: postgres:15
+    container_name: car_db
+    networks:
+      - car_network
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: cars
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  driver_service:
+    build: ./driverService/
+    container_name: driver_service
+    ports:
+      - "54020:8080"
+    networks:
+      - driver_network
+    environment:
+      - CAR_SERVICE_URL=http://car_serive:54010/api/v1/cars/list
+      - DB_IP_ADDRESS=driver_db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      driver_db:
+        condition: service_healthy
+    restart: always
+
+  car_service:
+    build: ./carService/
+    container_name: car_service
+    ports:
+      - "54010:8080"
+    networks:
+      - car_network
+    environment:
+      - DB_IP_ADDRESS=car_db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      car_db:
+        condition: service_healthy
+    restart: always
+
+networks:
+  car_network:
+    driver: bridge
+  driver_network:
+    driver: bridge

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress HttpUrlsUsage -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="230407-221500-1" author="kossatyy">
+        <createTable tableName="drivers">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="full_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="passport" type="varchar(255)">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="230407-221500-2" author="kossatyy">
+        <createTable tableName="cars">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="driver_id" type="bigint">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="driver_id"
+                                 baseTableName="cars"
+                                 constraintName="fk_cars_driver_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drivers"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="230407-221500-3" author="kossatyy">
+        <createTable tableName="accounts">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="balance"
+                    type="decimal(15,2)"
+                    defaultValueNumeric="0.00">
+            </column>
+            <column name="driver_id" type="bigint">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="driver_id"
+                                 baseTableName="accounts"
+                                 constraintName="fk_accounts_driver_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drivers"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+<!--    TODO replace enum sql for xml-->
+    <changeSet id="230407-221500-4" author="kossatyy">
+        <sql>
+            CREATE TYPE dl_category AS ENUM ('A', 'B', 'C', 'D');
+            CREATE TABLE categories
+            (
+                id       bigserial,
+                category dl_category,
+                driver_id   bigint NOT NULL,
+                PRIMARY KEY (id),
+                CONSTRAINT fk_categories_driver_id
+                    FOREIGN KEY (id) REFERENCES drivers ON DELETE CASCADE
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -5,7 +5,7 @@ springdoc:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_IP_ADDRESS}:${DB_PORT}/cars
+    url: jdbc:postgresql://${DB_IP_ADDRESS}:${DB_PORT}/drivers
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
@@ -28,4 +28,4 @@ spring:
     default-property-inclusion: non_null
 
   liquibase:
-    changeLog: "classpath:db/liquibase-changelog.xml"
+     changeLog: "classpath:db/liquibase-changelog.xml"

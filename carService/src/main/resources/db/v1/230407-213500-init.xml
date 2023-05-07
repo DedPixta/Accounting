@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress HttpUrlsUsage -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="230407-213500-1" author="kossatyy">
+        <createTable tableName="cars">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="brand" type="varchar(255)">
+            </column>
+            <column name="manufacturer" type="varchar(255)">
+            </column>
+            <column name="plate_number" type="varchar(255)">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="production_date" type="date">
+            </column>
+            <column name="vin" type="varchar(17)">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="230407-213500-2" author="kossatyy">
+        <createTable tableName="parts">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="serial_number" type="varchar(255)">
+                <constraints nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="car_id" type="bigint">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="car_id"
+                                 baseTableName="parts"
+                                 constraintName="fk_parts_car_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cars"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="230407-213500-3" author="kossatyy">
+        <createTable tableName="engines">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="capacity" type="int">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="engines"
+                                 constraintName="fk_engines_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="parts"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="230407-213500-4" author="kossatyy">
+        <createTable tableName="mufflers">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+            </column>
+            <column name="length" type="int">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="mufflers"
+                                 constraintName="fk_mufflers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="parts"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
