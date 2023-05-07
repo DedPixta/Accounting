@@ -1,0 +1,28 @@
+springdoc:
+  swagger-ui:
+    enabled: true
+    operations-sorter: alpha
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/cars
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: false
+
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: true
+        default_batch_fetch_size: 20
+        jdbc.batch_size: 20
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+  jackson:
+    default-property-inclusion: non_null
